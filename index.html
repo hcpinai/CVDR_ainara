@@ -1,123 +1,247 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Agenda de Actividades - Servicio Social CVDR Oaxaca</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Respaldo - Servicio Social</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; color: #333; line-height: 1.6; }
-        .header { text-align: center; border-bottom: 3px solid #800000; padding-bottom: 10px; margin-bottom: 20px; }
-        .header h1 { margin: 0; color: #800000; font-size: 22px; }
-        .header p { margin: 5px 0; font-size: 14px; }
+        :root {
+            --ipn-guinda: #800000;
+            --ipn-oro: #a47b46;
+            --polivirtual: #0056b3;
+            --success: #28a745;
+            --suave: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 1100px; margin: auto; }
+
+        /* HEADER */
+        .main-header { 
+            background: var(--ipn-guinda); color: white; padding: 35px; 
+            border-radius: 20px; text-align: center; margin-bottom: 30px; 
+            border-bottom: 8px solid var(--ipn-oro); box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* TARJETAS */
+        .card { 
+            background: white; border-radius: 18px; margin-bottom: 25px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden; 
+            border-left: 10px solid #ccc; transition: var(--suave);
+        }
+        .card.active-border { border-left-color: var(--success); }
+        .card.polivirtual-border { border-left-color: var(--polivirtual); }
+
+        .card-header { padding: 20px 30px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; background: #fafafa; }
+        .card-header h3 { margin: 0; font-size: 17px; color: var(--ipn-guinda); text-transform: uppercase; }
+
+        /* ANIMACIÓN DE FECHA (PULSO) */
+        .badge-pulse { 
+            background: var(--success); color: white; padding: 6px 16px; 
+            border-radius: 25px; font-size: 13px; font-weight: bold;
+            animation: pulse-animation 2s infinite;
+        }
+        .badge-static { background: #eee; color: #777; padding: 6px 16px; border-radius: 25px; font-size: 13px; font-weight: bold; }
+
+        @keyframes pulse-animation {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(40, 167, 69, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+        }
+
+        /* CONTENIDO */
+        .content { padding: 30px; }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .detail-box { background: #fdfdfd; border: 1px solid #eee; padding: 20px; border-radius: 12px; }
+        .detail-box h4 { margin: 0 0 12px; font-size: 14px; color: var(--ipn-guinda); border-bottom: 2px solid #eee; padding-bottom: 5px; }
+
+        /* RUTA DE CARPETA */
+        .folder-path { 
+            display: block; background: #2c3e50; color: #2ecc71; 
+            padding: 12px; border-radius: 8px; font-family: 'Consolas', monospace; 
+            margin-top: 15px; font-size: 14px; border-left: 5px solid var(--ipn-oro); text-align: center;
+        }
+
+        ul { font-size: 13px; line-height: 1.6; padding-left: 20px; color: #444; }
+        li { margin-bottom: 8px; }
         
-        .date-section { text-align: right; margin-bottom: 20px; font-weight: bold; color: #555; }
-        
-        .agenda-container { background-color: #fff; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; margin-bottom: 30px; }
-        .agenda-title { background-color: #800000; color: white; padding: 12px; font-size: 18px; }
-        
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #eee; padding: 15px; text-align: left; }
-        th { background-color: #f9f9f9; color: #800000; text-transform: uppercase; font-size: 13px; }
-        
-        .example-section { background-color: #fdfdfd; border: 2px dashed #ccc; padding: 25px; margin-top: 30px; border-radius: 10px; }
-        .example-header { color: #800000; font-weight: bold; font-size: 16px; margin-bottom: 15px; display: flex; align-items: center; }
-        .example-header::before { content: "📋"; margin-right: 10px; }
-        
-        .attendance-preview { width: 100%; border: 2px solid #000; font-family: "Times New Roman", Times, serif; background: white; margin-top: 10px; }
-        .attendance-preview td, .attendance-preview th { border: 1px solid #000; padding: 5px; text-align: center; font-size: 12px; }
-        .school-info { font-weight: bold; text-transform: uppercase; }
-        
-        .footer { margin-top: 50px; font-size: 12px; text-align: center; color: #666; border-top: 1px solid #eee; padding-top: 20px; }
-        .status-pill { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; background: #fff3cd; color: #856404; }
+        .faq-preview { background: #f0f7ff; border-left: 4px solid var(--ipn-oro); padding: 15px; margin-top: 15px; border-radius: 4px; }
+        .footer { text-align: center; padding: 40px; color: var(--ipn-guinda); font-weight: bold; opacity: 0.8; }
+
+        /* SECCIÓN RESPALDO (HISTORIAL) */
+        .history-label { background: #eee; padding: 10px 20px; font-weight: bold; font-size: 12px; color: #777; border-radius: 10px; margin-bottom: 10px; display: inline-block; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>CENTRO DE VINCULACIÓN Y DESARROLLO REGIONAL UNIDAD OAXACA (CVDR)</h1>
-        <p>Dirección: Hornos No. 1003, Santa Cruz Amilpas, Oax., C.P. 71226</p>
-        <p><strong>INSTITUTO POLITÉCNICO NACIONAL</strong></p>
-    </div>
+<div class="container">
+    <header class="main-header">
+        <h1>Dashboard de Respaldo Institucional</h1>
+        <p style="margin:8px 0 0; opacity:0.9; font-size:15px;">Bitácora Integral de Actividades Semanales - CVDR Oaxaca</p>
+    </header>
 
-    <div class="date-section">
-        Fecha de Asignación: 21 de enero de 2026
-    </div>
+    <span class="history-label">ARCHIVO DE ACTIVIDADES REALIZADAS</span>
 
-    <div class="agenda-container">
-        <div class="agenda-title">Agenda de Trabajo para Servicio Social</div>
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 15%;">Orden</th>
-                    <th style="width: 45%;">Actividad Detallada</th>
-                    <th style="width: 25%;">Entregable Esperado</th>
-                    <th style="width: 15%;">Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>01</strong></td>
-                    <td><strong>Formato de Asistencia Escolar:</strong> Crear la lista oficial para la Escuela Secundaria Técnica Num. 254. Debe incluir los datos del IEEPO y la ubicación en Ciudad Yagul.</td>
-                    <td>Archivo Digital (Excel/PDF)</td>
-                    <td><span class="status-pill">POR INICIAR</span></td>
-                </tr>
-                <tr>
-                    <td><strong>02</strong></td>
-                    <td><strong>Base de Conocimientos Polivirtual:</strong> Recopilar datos de becas y directorios para alimentar <em>NotebookLM</em> y estructurar un FAQ.</td>
-                    <td>Reporte de Preguntas IA</td>
-                    <td><span class="status-pill">PENDIENTE</span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="example-section">
-        <div class="example-header">MODELO DE EJECUCIÓN: ACTIVIDAD 1</div>
-        <p style="font-size: 14px; color: #555;">El alumno debe generar un documento con el siguiente encabezado y estructura:</p>
-        
-        <table class="attendance-preview">
-            <thead>
-                <tr>
-                    <th colspan="4" class="school-info">
-                        IEEPO INSTITUTO ESTATAL DE EDUCACIÓN PÚBLICA DE OAXACA<br>
-                        ESCUELA SECUNDARIA TÉCNICA NUM. 254 CLAVE: 20DST0271O<br>
-                        CIUDAD YAGUL, (FRACCIONAMIENTO) TLACOLULA DE MATAMOROS, OAXACA
-                    </th>
-                </tr>
-                <tr style="background: #f0f0f0;">
-                    <th colspan="4">LISTA DE ASISTENCIA</th>
-                </tr>
-                <tr>
-                    <th style="width: 40px;">No.</th>
-                    <th>Nombre Completo del Alumno</th>
-                    <th style="width: 100px;">Género (M/F)</th>
-                    <th style="width: 150px;">Firma</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>1</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                <tr><td>2</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                <tr><td>3</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                <tr style="font-weight: bold;">
-                    <td colspan="2" style="text-align: right;">TOTAL DE ASISTENTES:</td>
-                    <td colspan="2"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="example-section">
-        <div class="example-header">MODELO DE EJECUCIÓN: ACTIVIDAD 2</div>
-        <div style="font-size: 14px; padding-left: 20px;">
-            <strong>Paso 1:</strong> Entrar a <a href="https://notebooklm.google.com/">NotebookLM</a>.<br>
-            <strong>Paso 2:</strong> Subir los PDF de becas y directorios del Polivirtual.<br>
-            <strong>Paso 3:</strong> Generar un resumen de "Preguntas Frecuentes" para que el CVDR-Oaxaca lo use en su comunicación oficial.
+    <div class="card">
+        <div class="card-header">
+            <h3>Lunes 19: Estructura de Patrocinios Carrera 11K2026</h3>
+            <span class="badge-static">FINALIZADO</span>
+        </div>
+        <div class="content">
+            <div class="info-grid">
+                <div class="detail-box">
+                    <h4>🥇 Nivel Oro (Inversión Premium)</h4>
+                    <ul>
+                        <li>Logo principal en frente de playera oficial y medallas conmemorativas.</li>
+                        <li>Naming como Patrocinador Presentador en Landing Page oficial con CTA exclusivo.</li>
+                        <li>Arco de salida/meta y Stand Premium en zona expo.</li>
+                        <li>Inclusión prioritaria en Teaser, Aftermovie y menciones recurrentes en redes.</li>
+                        <li>Activaciones de marca y mención destacada por locutor oficial.</li>
+                    </ul>
+                </div>
+                <div class="detail-box">
+                    <h4>🥈 Plata & 🥉 Bronce</h4>
+                    <ul>
+                        <li><b>Plata:</b> Logo en playera (trasera/manga), señalización, stand estándar y kit del corredor.</li>
+                        <li><b>Bronce:</b> Logo en landing page, redes sociales, banner general y créditos finales.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="footer">
-        <p>"La Técnica al Servicio de la Patria"</p>
-        <p style="margin-top: 20px;">__________________________________________<br>Firma de Recepción (Alumno)</p>
+    <div class="card">
+        <div class="card-header">
+            <h3>Martes 20: Análisis Jerárquico de Directivos</h3>
+            <span class="badge-static">FINALIZADO</span>
+        </div>
+        <div class="content">
+            <p style="font-size: 14px;">Revisión exhaustiva de oficios sobre patrocinadores. Se extrajeron nombres, cargos y departamentos de los directivos actuales para la gestión de relaciones institucionales en formato de tabla de control.</p>
+        </div>
     </div>
+
+    <span class="history-label" style="background: var(--success); color: white;">ACTIVIDADES EN CURSO / PRÓXIMAS</span>
+
+    <div class="card" id="card-miercoles">
+        <div class="card-header">
+            <h3>Miércoles 21: Logística y Control Escolar</h3>
+            <span id="badge-miercoles" class="badge-static">MIÉRCOLES 21</span>
+        </div>
+        <div class="content">
+            <div class="info-grid">
+                <div class="detail-box">
+                    <h4>📍 Secundaria Técnica 254 (Tlacolula)</h4>
+                    <ul>
+                        <li>Elaboración de listas de asistencia para ciclo de conferencias.</li>
+                        <li>Coordinación logística para la <b>Unidad Móvil de Aprendizaje (UMA)</b>.</li>
+                    </ul>
+                </div>
+                <div class="info-box" style="background:#f9f9f9; padding:15px; border-radius:10px; border:1px solid #eee;">
+                    <h4>📍 Secundaria Genaro Vázquez</h4>
+                    <p style="font-size:13px;">Diseño del plan operativo para la visita institucional y atención a la comunidad estudiantil.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ <div class="card polivirtual-border" id="card-jueves">
+    <div class="card-header">
+        <h3 style="color: var(--polivirtual);">Jueves 22: Base de Conocimientos POLIVIRTUAL</h3>
+        <span id="badge-jueves" class="badge-static">JUEVES 22</span>
+    </div>
+    <div class="content">
+        <div class="info-box" style="background: #f0f7ff; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #d0e3ff;">
+            <h4 style="color: var(--polivirtual); margin:0 0 10px;">🎯 Misión de Investigación (Ainara)</h4>
+            <p style="font-size: 14px; margin: 0; line-height: 1.6;">
+                Tu objetivo es actuar como **Curadora de Contenido**. Debes localizar, validar y descargar la documentación oficial que rige a los alumnos de la modalidad no escolarizada (Polivirtual). Esta base servirá para que el CVDR Oaxaca responda dudas con precisión técnica y fundamento legal.
+            </p>
+        </div>
+
+        <div class="info-grid">
+            <div class="detail-box">
+                <h4 style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 18px;">📂</span> Fase 1: Recopilación de Recursos
+                </h4>
+                <p style="font-size: 12px; color: #555; margin-bottom: 10px;">Descargar y organizar los siguientes documentos desde <i>ipn.mx</i> y <i>polivirtual.ipn.mx</i>:</p>
+                <ul style="font-size: 13px; color: #444;">
+                    <li><b>Normatividad:</b> Reglamento de Estudios del IPN (actualizado) y Reglamento de Educación a Distancia.</li>
+                    <li><b>Admisión:</b> Convocatoria vigente para Nivel Medio Superior y Superior (Modalidad No Escolarizada).</li>
+                    <li><b>Manuales de Usuario:</b> Guía de navegación del Aula Virtual, manual de recuperación de contraseñas y uso de foros.</li>
+                    <li><b>Trámites Administrativos:</b> Calendario académico, procedimiento de alta en el IMSS y guía de solicitud de becas SIBEC.</li>
+                    <li><b>Directorio de Soporte:</b> Enlaces a mesas de ayuda técnica y correos de Gestión Escolar.</li>
+                </ul>
+                <strong style="font-size:11px; color:var(--ipn-guinda); display:block; margin-top:15px; text-transform: uppercase;">Ubicación de Respaldo:</strong>
+                <span class="folder-path" style="background: #2c3e50; color: #2ecc71; padding: 10px; border-radius: 6px; display: block; text-align: center; font-family: monospace;">
+                    Ainara/Documentos polivirtual
+                </span>
+            </div>
+
+            <div class="detail-box">
+                <h4 style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 18px;">✍️</span> Fase 2: Formulación de 15 FAQs
+                </h4>
+                <p style="font-size: 12px; color: #555; margin-bottom: 10px;">Redactar 15 preguntas divididas en estas categorías obligatorias:</p>
+                
+                <div class="faq-preview">
+                    <b>1. Académicas (5):</b> Diferencia entre Asesor y Tutor, cómo funcionan las asesorías y qué hacer si un asesor no responde.
+                </div>
+
+                <div class="faq-preview" style="margin-top:8px;">
+                    <b>2. Administrativas (5):</b> Cómo obtener la credencial física, trámites de seguro médico y procesos de reinscripción.
+                </div>
+
+                <div class="faq-preview" style="margin-top:8px;">
+                    <b>3. Técnicas (5):</b> Requisitos de hardware, navegadores compatibles y qué hacer si la plataforma falla durante un examen.
+                </div>
+
+                <div style="margin-top: 15px; border: 1px dashed #bbb; padding: 10px; border-radius: 6px; background: #fff;">
+                    <small style="color: #888; font-style: italic;"><b>Tip de redacción:</b> Usa un lenguaje sencillo para los alumnos, pero siempre menciona en qué documento del Paso 1 encontraste la respuesta.</small>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top:20px; background: #fffcf0; border: 1px solid #fce9a4; padding: 15px; border-radius: 10px; font-size: 13px;">
+            <b style="color: #856404;">📋 Checklist de Entrega Final:</b>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; margin-top: 8px;">
+                <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"> Mínimo 5 archivos PDF oficiales.</label>
+                <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"> Documento con 15 FAQs redactadas.</label>
+                <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"> Lista de 5 URLs de consulta rápida.</label>
+                <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"> Todo guardado en la ruta de Ainara.</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="footer">"LA TÉCNICA AL SERVICIO DE LA PATRIA"</div>
+</div>
+
+<script>
+    function updateBlinking() {
+        const now = new Date();
+        const day = now.getDate();
+        const month = now.getMonth(); // 0 = Enero
+
+        const bMiercoles = document.getElementById('badge-miercoles');
+        const bJueves = document.getElementById('badge-jueves');
+        const cMiercoles = document.getElementById('card-miercoles');
+        const cJueves = document.getElementById('card-jueves');
+
+        // Miércoles 21
+        if (day === 21 && month === 0) {
+            bMiercoles.className = 'badge-pulse';
+            cMiercoles.className = 'card active-border';
+        } 
+        // Jueves 22 o posterior
+        else if (day >= 22 && month === 0) {
+            bJueves.className = 'badge-pulse';
+            cJueves.className = 'card polivirtual-border active-border';
+            cMiercoles.style.opacity = '0.6'; // Atenuar lo pasado
+        }
+    }
+
+    window.onload = updateBlinking;
+</script>
 
 </body>
 </html>
