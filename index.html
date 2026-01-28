@@ -1,247 +1,156 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Respaldo - Servicio Social</title>
+    <title>Plan de Trabajo Detallado - 28 de Enero 2026</title>
     <style>
         :root {
             --ipn-guinda: #800000;
             --ipn-oro: #a47b46;
-            --polivirtual: #0056b3;
             --success: #28a745;
-            --suave: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --info: #0056b3;
+            --bg: #f4f7f9;
         }
 
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 1100px; margin: auto; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #2c3e50; line-height: 1.6; }
+        .container { max-width: 1000px; margin: auto; }
 
-        /* HEADER */
-        .main-header { 
-            background: var(--ipn-guinda); color: white; padding: 35px; 
-            border-radius: 20px; text-align: center; margin-bottom: 30px; 
-            border-bottom: 8px solid var(--ipn-oro); box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        .header-main { 
+            background: var(--ipn-guinda); color: white; padding: 30px; 
+            border-radius: 15px; text-align: center; margin-bottom: 25px;
+            border-bottom: 6px solid var(--ipn-oro);
         }
 
-        /* TARJETAS */
-        .card { 
-            background: white; border-radius: 18px; margin-bottom: 25px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden; 
-            border-left: 10px solid #ccc; transition: var(--suave);
-        }
-        .card.active-border { border-left-color: var(--success); }
-        .card.polivirtual-border { border-left-color: var(--polivirtual); }
-
-        .card-header { padding: 20px 30px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; background: #fafafa; }
-        .card-header h3 { margin: 0; font-size: 17px; color: var(--ipn-guinda); text-transform: uppercase; }
-
-        /* ANIMACIÓN DE FECHA (PULSO) */
-        .badge-pulse { 
-            background: var(--success); color: white; padding: 6px 16px; 
-            border-radius: 25px; font-size: 13px; font-weight: bold;
-            animation: pulse-animation 2s infinite;
-        }
-        .badge-static { background: #eee; color: #777; padding: 6px 16px; border-radius: 25px; font-size: 13px; font-weight: bold; }
-
-        @keyframes pulse-animation {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(40, 167, 69, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+        .task-card { 
+            background: white; border-radius: 12px; margin-bottom: 25px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #e1e8ed;
         }
 
-        /* CONTENIDO */
-        .content { padding: 30px; }
-        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .detail-box { background: #fdfdfd; border: 1px solid #eee; padding: 20px; border-radius: 12px; }
-        .detail-box h4 { margin: 0 0 12px; font-size: 14px; color: var(--ipn-guinda); border-bottom: 2px solid #eee; padding-bottom: 5px; }
-
-        /* RUTA DE CARPETA */
-        .folder-path { 
-            display: block; background: #2c3e50; color: #2ecc71; 
-            padding: 12px; border-radius: 8px; font-family: 'Consolas', monospace; 
-            margin-top: 15px; font-size: 14px; border-left: 5px solid var(--ipn-oro); text-align: center;
+        .task-header { 
+            background: #f8f9fa; padding: 15px 25px; 
+            border-bottom: 2px solid #eee; display: flex; align-items: center; gap: 10px;
         }
 
-        ul { font-size: 13px; line-height: 1.6; padding-left: 20px; color: #444; }
-        li { margin-bottom: 8px; }
-        
-        .faq-preview { background: #f0f7ff; border-left: 4px solid var(--ipn-oro); padding: 15px; margin-top: 15px; border-radius: 4px; }
-        .footer { text-align: center; padding: 40px; color: var(--ipn-guinda); font-weight: bold; opacity: 0.8; }
+        .task-header h2 { margin: 0; font-size: 18px; color: var(--ipn-guinda); text-transform: uppercase; }
 
-        /* SECCIÓN RESPALDO (HISTORIAL) */
-        .history-label { background: #eee; padding: 10px 20px; font-weight: bold; font-size: 12px; color: #777; border-radius: 10px; margin-bottom: 10px; display: inline-block; }
+        .content { padding: 25px; }
+
+        /* ESTILOS DE INSTRUCCIÓN */
+        .instruction-step { margin-bottom: 20px; padding: 15px; background: #fafafa; border-radius: 8px; border-left: 5px solid var(--ipn-oro); }
+        .instruction-step h3 { margin-top: 0; font-size: 16px; color: var(--info); }
+
+        .url-box {
+            background: #e7f3ff; border: 1px solid #b3d7ff;
+            padding: 15px; border-radius: 8px; margin-bottom: 20px;
+        }
+
+        .link-button {
+            display: inline-block; background: white; color: var(--info);
+            padding: 10px 20px; border-radius: 6px; border: 1px solid #b3d7ff;
+            text-decoration: none; font-weight: bold; font-family: monospace;
+            margin-top: 10px; font-size: 13px;
+        }
+
+        .checklist { list-style: none; padding: 0; margin: 10px 0; }
+        .checklist li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; font-size: 14px; }
+        .checklist input[type="checkbox"] { margin-top: 4px; }
+
+        .path-label { background: #2c3e50; color: #00ff88; padding: 8px 12px; border-radius: 5px; font-family: monospace; display: block; margin: 10px 0; font-size: 13px; }
+
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 13px; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header class="main-header">
-        <h1>Dashboard de Respaldo Institucional</h1>
-        <p style="margin:8px 0 0; opacity:0.9; font-size:15px;">Bitácora Integral de Actividades Semanales - CVDR Oaxaca</p>
+    <header class="header-main">
+        <h1 style="margin:0;">Instrucciones de Trabajo: 28 de Enero 2026</h1>
+        <p style="margin:10px 0 0; opacity:0.9;">Por favor, siga estas indicaciones detalladas para asegurar la calidad de los procesos.</p>
     </header>
 
-    <span class="history-label">ARCHIVO DE ACTIVIDADES REALIZADAS</span>
+    <div class="url-box">
+        <strong>1. RECURSO OBLIGATORIO:</strong> Descargue las plantillas institucionales antes de redactar cualquier documento. No se aceptarán reportes fuera de formato.
+        <br>
+        <a href="https://drive.google.com/drive/folders/1iNk5DCejRDenNQv6r7Dn70OlWSBzhGTB?usp=drive_link" class="link-button" target="_blank">📂 DESCARGAR FORMATOS (WORD/PPT)</a>
+    </div>
 
-    <div class="card">
-        <div class="card-header">
-            <h3>Lunes 19: Estructura de Patrocinios Carrera 11K2026</h3>
-            <span class="badge-static">FINALIZADO</span>
+    <div class="task-card">
+        <div class="task-header">
+            <span>📂</span>
+            <h2>Gestión y Clasificación de Banco de Fotos</h2>
         </div>
         <div class="content">
-            <div class="info-grid">
-                <div class="detail-box">
-                    <h4>🥇 Nivel Oro (Inversión Premium)</h4>
-                    <ul>
-                        <li>Logo principal en frente de playera oficial y medallas conmemorativas.</li>
-                        <li>Naming como Patrocinador Presentador en Landing Page oficial con CTA exclusivo.</li>
-                        <li>Arco de salida/meta y Stand Premium en zona expo.</li>
-                        <li>Inclusión prioritaria en Teaser, Aftermovie y menciones recurrentes en redes.</li>
-                        <li>Activaciones de marca y mención destacada por locutor oficial.</li>
-                    </ul>
-                </div>
-                <div class="detail-box">
-                    <h4>🥈 Plata & 🥉 Bronce</h4>
-                    <ul>
-                        <li><b>Plata:</b> Logo en playera (trasera/manga), señalización, stand estándar y kit del corredor.</li>
-                        <li><b>Bronce:</b> Logo en landing page, redes sociales, banner general y créditos finales.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <h3>Martes 20: Análisis Jerárquico de Directivos</h3>
-            <span class="badge-static">FINALIZADO</span>
-        </div>
-        <div class="content">
-            <p style="font-size: 14px;">Revisión exhaustiva de oficios sobre patrocinadores. Se extrajeron nombres, cargos y departamentos de los directivos actuales para la gestión de relaciones institucionales en formato de tabla de control.</p>
-        </div>
-    </div>
-
-    <span class="history-label" style="background: var(--success); color: white;">ACTIVIDADES EN CURSO / PRÓXIMAS</span>
-
-    <div class="card" id="card-miercoles">
-        <div class="card-header">
-            <h3>Miércoles 21: Logística y Control Escolar</h3>
-            <span id="badge-miercoles" class="badge-static">MIÉRCOLES 21</span>
-        </div>
-        <div class="content">
-            <div class="info-grid">
-                <div class="detail-box">
-                    <h4>📍 Secundaria Técnica 254 (Tlacolula)</h4>
-                    <ul>
-                        <li>Elaboración de listas de asistencia para ciclo de conferencias.</li>
-                        <li>Coordinación logística para la <b>Unidad Móvil de Aprendizaje (UMA)</b>.</li>
-                    </ul>
-                </div>
-                <div class="info-box" style="background:#f9f9f9; padding:15px; border-radius:10px; border:1px solid #eee;">
-                    <h4>📍 Secundaria Genaro Vázquez</h4>
-                    <p style="font-size:13px;">Diseño del plan operativo para la visita institucional y atención a la comunidad estudiantil.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
- <div class="card polivirtual-border" id="card-jueves">
-    <div class="card-header">
-        <h3 style="color: var(--polivirtual);">Jueves 22: Base de Conocimientos POLIVIRTUAL</h3>
-        <span id="badge-jueves" class="badge-static">JUEVES 22</span>
-    </div>
-    <div class="content">
-        <div class="info-box" style="background: #f0f7ff; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #d0e3ff;">
-            <h4 style="color: var(--polivirtual); margin:0 0 10px;">🎯 Misión de Investigación (Ainara)</h4>
-            <p style="font-size: 14px; margin: 0; line-height: 1.6;">
-                Tu objetivo es actuar como **Curadora de Contenido**. Debes localizar, validar y descargar la documentación oficial que rige a los alumnos de la modalidad no escolarizada (Polivirtual). Esta base servirá para que el CVDR Oaxaca responda dudas con precisión técnica y fundamento legal.
-            </p>
-        </div>
-
-        <div class="info-grid">
-            <div class="detail-box">
-                <h4 style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 18px;">📂</span> Fase 1: Recopilación de Recursos
-                </h4>
-                <p style="font-size: 12px; color: #555; margin-bottom: 10px;">Descargar y organizar los siguientes documentos desde <i>ipn.mx</i> y <i>polivirtual.ipn.mx</i>:</p>
-                <ul style="font-size: 13px; color: #444;">
-                    <li><b>Normatividad:</b> Reglamento de Estudios del IPN (actualizado) y Reglamento de Educación a Distancia.</li>
-                    <li><b>Admisión:</b> Convocatoria vigente para Nivel Medio Superior y Superior (Modalidad No Escolarizada).</li>
-                    <li><b>Manuales de Usuario:</b> Guía de navegación del Aula Virtual, manual de recuperación de contraseñas y uso de foros.</li>
-                    <li><b>Trámites Administrativos:</b> Calendario académico, procedimiento de alta en el IMSS y guía de solicitud de becas SIBEC.</li>
-                    <li><b>Directorio de Soporte:</b> Enlaces a mesas de ayuda técnica y correos de Gestión Escolar.</li>
+            <div class="instruction-step">
+                <h3>Paso 1: Organización en Servidor Local</h3>
+                <p>Localice el material fotográfico de las actividades escolares y proceda de la siguiente manera:</p>
+                <ul class="checklist">
+                    <li><input type="checkbox"> Identificar y separar fotos de la <b>Escuela Secundaria Técnica 254 (Tlacolula)</b>.</li>
+                    <li><input type="checkbox"> Identificar y separar fotos de la <b>Escuela Secundaria (Xoxocotlán)</b>.</li>
+                    <li><input type="checkbox"> Mover  los archivos a las carpetas ya creadas:</li>
                 </ul>
-                <strong style="font-size:11px; color:var(--ipn-guinda); display:block; margin-top:15px; text-transform: uppercase;">Ubicación de Respaldo:</strong>
-                <span class="folder-path" style="background: #2c3e50; color: #2ecc71; padding: 10px; border-radius: 6px; display: block; text-align: center; font-family: monospace;">
-                    Ainara/Documentos polivirtual
-                </span>
-            </div>
-
-            <div class="detail-box">
-                <h4 style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 18px;">✍️</span> Fase 2: Formulación de 15 FAQs
-                </h4>
-                <p style="font-size: 12px; color: #555; margin-bottom: 10px;">Redactar 15 preguntas divididas en estas categorías obligatorias:</p>
-                
-                <div class="faq-preview">
-                    <b>1. Académicas (5):</b> Diferencia entre Asesor y Tutor, cómo funcionan las asesorías y qué hacer si un asesor no responde.
-                </div>
-
-                <div class="faq-preview" style="margin-top:8px;">
-                    <b>2. Administrativas (5):</b> Cómo obtener la credencial física, trámites de seguro médico y procesos de reinscripción.
-                </div>
-
-                <div class="faq-preview" style="margin-top:8px;">
-                    <b>3. Técnicas (5):</b> Requisitos de hardware, navegadores compatibles y qué hacer si la plataforma falla durante un examen.
-                </div>
-
-                <div style="margin-top: 15px; border: 1px dashed #bbb; padding: 10px; border-radius: 6px; background: #fff;">
-                    <small style="color: #888; font-style: italic;"><b>Tip de redacción:</b> Usa un lenguaje sencillo para los alumnos, pero siempre menciona en qué documento del Paso 1 encontraste la respuesta.</small>
-                </div>
-            </div>
-        </div>
-        
-        <div style="margin-top:20px; background: #fffcf0; border: 1px solid #fce9a4; padding: 15px; border-radius: 10px; font-size: 13px;">
-            <b style="color: #856404;">📋 Checklist de Entrega Final:</b>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; margin-top: 8px;">
-                <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"> Mínimo 5 archivos PDF oficiales.</label>
-                <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"> Documento con 15 FAQs redactadas.</label>
-                <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"> Lista de 5 URLs de consulta rápida.</label>
-                <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"> Todo guardado en la ruta de Ainara.</label>
+                <span class="path-label">Directorio_2026 / Banco_de_fotos / xxxxxxxxxx /</span>
             </div>
         </div>
     </div>
+
+    <div class="task-card">
+        <div class="task-header">
+            <span>📝</span>
+            <h2>Elaboración de Reportes Técnicos</h2>
+        </div>
+        <div class="content">
+            <div class="instruction-step">
+                <h3>Paso 2: Generación de Documentación (Word y PowerPoint)</h3>
+                <
+                
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                    <tr style="background: #eee; text-align: left;">
+                        <th style="padding: 10px; border: 1px solid #ddd;">Conferencia</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Requisitos Específicos</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><b>Inteligencia Artificial</b><br>(Dr. Sergio)</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            - Reporte 1: Sesión en Cancha Escolar Tlacolula.<br>
+                            - Reporte 2: Sesión en Cancha Escolar Xoxocotlán.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><b>Drones y Percepción Remota</b><br>(Dr. Hermelando)</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            - <b>Indispensable:</b> Incluir fotografía del Dr. Hermelando impartiendo la capacitación.
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="task-card" style="border-left: 8px solid var(--success);">
+        <div class="task-header">
+            <span>☁️</span>
+            <h2>Carga Final de Evidencias</h2>
+        </div>
+        <div class="content">
+            <div class="instruction-step">
+                <h3>Paso 3: Subida a la Nube</h3>
+                <p>Una vez finalizada la organización y los reportes, suba <b>todo el contenido</b> a la carpeta de Drive .</p>
+                
+                <div style="text-align: center; margin-top: 15px;">
+                    <strong style="font-size: 14px; color: var(--success);">URL DE CARGA FINAL:</strong><br>
+                    <a href="https://drive.google.com/drive/folders/1-1ni72z58y28j1MJRFGKKO6IfWsk9U8C?usp=sharing" class="link-button" style="border-color: var(--success); color: var(--success);" target="_blank">🔗 SUBIR EVIDENCIAS AQUÍ</a>
+                </div>
+
+                
+        </div>
+    </div>
+
+    <div class="footer">
+        "LA TÉCNICA AL SERVICIO DE LA PATRIA"<br>
+        © 2026 CVDR Oaxaca - Gestión de Procesos Institucionales
+    </div>
 </div>
-
-    <div class="footer">"LA TÉCNICA AL SERVICIO DE LA PATRIA"</div>
-</div>
-
-<script>
-    function updateBlinking() {
-        const now = new Date();
-        const day = now.getDate();
-        const month = now.getMonth(); // 0 = Enero
-
-        const bMiercoles = document.getElementById('badge-miercoles');
-        const bJueves = document.getElementById('badge-jueves');
-        const cMiercoles = document.getElementById('card-miercoles');
-        const cJueves = document.getElementById('card-jueves');
-
-        // Miércoles 21
-        if (day === 21 && month === 0) {
-            bMiercoles.className = 'badge-pulse';
-            cMiercoles.className = 'card active-border';
-        } 
-        // Jueves 22 o posterior
-        else if (day >= 22 && month === 0) {
-            bJueves.className = 'badge-pulse';
-            cJueves.className = 'card polivirtual-border active-border';
-            cMiercoles.style.opacity = '0.6'; // Atenuar lo pasado
-        }
-    }
-
-    window.onload = updateBlinking;
-</script>
 
 </body>
 </html>
